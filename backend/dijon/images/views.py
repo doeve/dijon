@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.cache import cache
 from PIL import Image
-import io
+import io, os
 
 def serve_image(request, image_name):
     size = request.GET.get('size', '')
@@ -33,4 +33,7 @@ def serve_image(request, image_name):
     
     except Exception as e:
         return HttpResponse(f'Error: {e}', status=404)
-        
+
+def get_image_names(request):
+    image_names = os.listdir('images/assets')
+    return JsonResponse({'names' : image_names})
